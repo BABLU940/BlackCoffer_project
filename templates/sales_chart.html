@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interactive Sales Chart</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div id="sales-chart"></div>
+    <script>
+        // JavaScript code to fetch the data and create an interactive chart with Plotly.js
+        fetch('http://localhost:8000/sales/')
+            .then(response => response.json())
+            .then(data => {
+                const dates = data.map(entry => entry.date);
+                const revenues = data.map(entry => entry.revenue);
+
+                const trace = {
+                    x: dates,
+                    y: revenues,
+                    type: 'bar',
+                    marker: { color: 'skyblue' }
+                };
+
+                const layout = {
+                    title: 'Interactive Sales Revenue Chart',
+                    xaxis: { title: 'Date' },
+                    yaxis: { title: 'Revenue' }
+                };
+
+                const chartData = [trace];
+                Plotly.newPlot('sales-chart', chartData, layout);
+            })
+            .catch(error => console.error(error));
+    </script>
+</body>
+</html>
